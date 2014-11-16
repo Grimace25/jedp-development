@@ -5,12 +5,14 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
 >
-<ui:define name="content">                  
+<ui:define name="content"> 
+<f:event listener="#{QuestionBean.unsetSkillId}" type="preRenderView" />
 <h:form target="_blank">
     <h:panelGroup>
-        <h:outputText value="Enter Skill:" styleClass="style2"/>
-        <br/>
-	<h:inputText id="Skill_ID" value="#{QuestionBean.skillId}" required="true" size="27" />
+        <h:outputText value="Select Skill" styleClass="style2"/>
+        <h:selectOneMenu value="#{QuestionBean.skillId}">
+            <f:selectItems value="#{QuestionBean.listSkills()}" itemLabel="#{QuestionBean.skillId}" itemValue="#{QuestionBean.skillId}" />
+        </h:selectOneMenu>
 	<f:verbatim><br/></f:verbatim>
 	<h:message for="skillId" styleClass="errors"/>
     </h:panelGroup>

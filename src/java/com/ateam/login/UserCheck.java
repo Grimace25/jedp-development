@@ -20,6 +20,7 @@ public class UserCheck implements Serializable{
         String role;
 	boolean exist;
         String role2;
+        String fullName;
 			
 	public void setUserName(String userName){
 		this.userName=userName;
@@ -43,6 +44,9 @@ public class UserCheck implements Serializable{
         public String getRole(){
 		return role;
 	}
+        public String getFullName(){
+		return fullName;
+	}
 public String checkUser() throws Exception {
     String status = "unauthorized";
     
@@ -50,8 +54,9 @@ public String checkUser() throws Exception {
 
 		if(dao.validateUser(getUserName(),getPwd())!=null){
 			exist=true;
-                        role2 = dao.checkRole(getUserName(),getPwd());
-                            if(role2.equals("Admin")){
+                        fullName = dao.checkFullName(getUserName(),getPwd());
+                        role = dao.checkRole(getUserName(),getPwd());
+                            if(role.equals("Admin")){
                                 status = "Adminindex";
 		}else {
                                 status = "index";

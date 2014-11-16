@@ -28,7 +28,9 @@ public class QuestionBean implements Serializable {
     String exAnswer;
     String questionType;
     String businessUnit;
+    String feedback;
     List status2;
+    List status3;
     HibernateDAO dao;
     com.ateam.app.Questions q;
 				
@@ -46,6 +48,9 @@ public class QuestionBean implements Serializable {
 	}
 	public void setExAnswer(String exAnswer){
 		this.exAnswer=exAnswer;
+	}
+        public void setFeedback(String feedback){
+		this.feedback=feedback;
 	}
         
 	public String getSkillId(){
@@ -68,6 +73,12 @@ public class QuestionBean implements Serializable {
 	}
         public String getbusinessUnit(){
 		return businessUnit;
+	}
+        public String getFeedback(){
+		return feedback;
+	}
+        public void unsetSkillId(){
+		this.skillId=null;
 	}
         public String generateQuestion() throws Exception {
             String status = "placeholder";
@@ -99,4 +110,21 @@ public class QuestionBean implements Serializable {
             q.setDifficulty(getDifficulty());
             status2.add(dao.generateQuestion(getSkillId(),getDifficulty()));
         }
+        
+        public List listSkills() throws Exception {
+            HibernateDAO dao =(HibernateDAO)ServiceFinder.findBean("SpringHibernateDao");
+            com.ateam.app.Questions r = new com.ateam.app.Questions();
+            List skills = dao.listSkills();
+            return skills;
+  }
+        
+        public String submitFeedback() throws Exception {
+            String status = "placeholder";
+            HibernateDAO dao2 =(HibernateDAO)ServiceFinder.findBean("SpringHibernateDao");
+            com.ateam.app.Questionnaire s = new com.ateam.app.Questionnaire();
+            s.setFeedback(getFeedback());
+            dao2.submitFeedback(s);
+            status = "results2";
+            return status;
+  }
 }

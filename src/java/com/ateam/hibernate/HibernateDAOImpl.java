@@ -63,6 +63,21 @@ public class HibernateDAOImpl extends HibernateDaoSupport implements HibernateDA
 		}
 		return obj;
 	}
+        
+        public String checkFullName(String strUserName,String password) throws DataAccessException, java.sql.SQLException {
+		String obj = null;
+		DetachedCriteria critname = DetachedCriteria.forClass(UserAttr.class);
+                ProjectionList pl = Projections.projectionList();
+                pl.add(Projections.groupProperty("userFullName"));
+		critname.add(Restrictions.eq("userName", strUserName));
+		critname.add(Restrictions.eq("userPassword", password));
+                critname.setProjection(pl);
+		List objs = getHibernateTemplate().findByCriteria(critname);
+		if ((objs != null) && (objs.size() > 0)) {
+			obj = (String) objs.get(0);
+		}
+		return obj;
+	}
 
         public List<Questions> generateQuestion(String skillId,String difficulty)throws DataAccessException, java.sql.SQLException {
             Questions obj = null;
@@ -97,5 +112,17 @@ public class HibernateDAOImpl extends HibernateDaoSupport implements HibernateDA
             List objs = getHibernateTemplate().findByCriteria(critfour);
 
 		return objs;
+	}
+        
+        public List<Questions> listSkills() throws DataAccessException, java.sql.SQLException {
+            Questions obj = null;
+            DetachedCriteria critfive = DetachedCriteria.forClass(Questions.class);
+            critfive.setProjection(Projections.distinct(Projections.property("skillId")));
+            List objs = getHibernateTemplate().findByCriteria(critfive);
+
+		return objs;
+	}
+        public void submitFeedback(com.ateam.app.Questionnaire s)throws DataAccessException {
+            getHibernateTemplate().save(s);
 	}
 }
